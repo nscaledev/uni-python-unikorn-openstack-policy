@@ -1,7 +1,4 @@
-# Unikorn OpenStack Policy Generator
-
-![Unikorn Logo](https://raw.githubusercontent.com/unikorn-cloud/assets/main/images/logos/light-on-dark/logo.svg#gh-dark-mode-only)
-![Unikorn Logo](https://raw.githubusercontent.com/unikorn-cloud/assets/main/images/logos/dark-on-light/logo.svg#gh-light-mode-only)
+# OpenStack Policy Generator
 
 ## Overview
 
@@ -41,7 +38,7 @@ Finally, we need to allow the `manager` to create provider networks in the proje
 You first need to create a non-admin role to perform all the necessary actions.
 Unikorn already requires the [SCS domain admin](https://docs.scs.community/standards/scs-0302-v1-domain-manager-role/) functionality for reduced privilege user/project creation, so we use the same role.
 
-The SCS policies limit the roles that can be applied to projects by the manager, and are incompatible with how unikorn needs to work so you will want to update the following line:
+The SCS policies limit the roles that can be applied to projects by the manager, and are incompatible with how our services need to work so you will want to update the following line:
 
 ```diff
 -"is_domain_managed_role": "'member':%(target.role.name)s or 'load-balancer_member':%(target.role.name)s"
