@@ -93,7 +93,7 @@ pip3 install build pylint
 
 ```bash
 python3 -m build
-pip3 install --force-reinstall dist/python_unikorn_openstack_policy-0.1.0-py3-none-any.whl
+pip3 install --force-reinstall --no-deps dist/python_unikorn_openstack_policy-0.1.0-py3-none-any.whl
 ```
 
 ### Generating Policy Files
