@@ -34,6 +34,7 @@ rules = [
 ]
 
 
+# pylint: disable=R0801
 def list_rules():
     """Implements the "oslo.policy.policies" entry point"""
 
@@ -46,7 +47,10 @@ def list_rules():
 def get_enforcer():
     """Implements the "oslo.policy.enforcer" entry point"""
 
-    enforcer = policy.Enforcer(conf=cfg.CONF)
+    conf=cfg.CONF
+    conf(args=[])
+
+    enforcer = policy.Enforcer(conf=conf)
     enforcer.register_defaults(list_rules())
 
     return enforcer

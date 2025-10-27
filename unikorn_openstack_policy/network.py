@@ -58,6 +58,26 @@ rules = [
         check_str='rule:is_project_manager',
         description='Specify ``provider:segmentation_id`` when creating a network',
     ),
+    policy.RuleDefault(
+        name='get_network:segments',
+        check_str='rule:is_project_manager',
+        description='Get ``segments`` attribute of a network',
+    ),
+    policy.RuleDefault(
+        name='get_network:provider:network_type',
+        check_str='rule:is_project_manager',
+        description='Get ``provider:network_type`` attribute of a network',
+    ),
+    policy.RuleDefault(
+        name='get_network:provider:physical_network',
+        check_str='rule:is_project_manager',
+        description='Get ``provider:physical_network`` attribute of a network',
+    ),
+    policy.RuleDefault(
+        name='get_network:provider:segmentation_id',
+        check_str='rule:is_project_manager',
+        description='Get ``provider:segmentation_id`` aattribute of a network',
+    ),
 
     # The domain manager can update quotas.
     policy.RuleDefault(
@@ -68,6 +88,7 @@ rules = [
 ]
 
 
+# pylint: disable=R0801
 def list_rules():
     """Implements the "oslo.policy.policies" entry point"""
 
@@ -80,7 +101,10 @@ def list_rules():
 def get_enforcer():
     """Implements the "oslo.policy.enforcer" entry point"""
 
-    enforcer = policy.Enforcer(conf=cfg.CONF)
+    conf=cfg.CONF
+    conf(args=[])
+
+    enforcer = policy.Enforcer(conf=conf)
     enforcer.register_defaults(list_rules())
 
     return enforcer

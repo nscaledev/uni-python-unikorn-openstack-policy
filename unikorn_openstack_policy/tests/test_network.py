@@ -67,6 +67,34 @@ class ProjectAdminNetworkPolicyTests(base.PolicyTestsBase):
                 self.enforce(
                     'create_network:provider:segmentation_id', self.alt_target, self.context))
 
+    def test_get_network_segments(self):
+        """Admin can get network segments"""
+        self.assertTrue(self.enforce('get_network:segments', self.target, self.context))
+        self.assertTrue(self.enforce('get_network:segments', self.alt_target, self.context))
+
+    def test_get_network_provider_network_type(self):
+        """Admin can get provider network types"""
+        self.assertTrue(
+                self.enforce('create_network:provider:network_type', self.target, self.context))
+        self.assertTrue(
+                self.enforce('create_network:provider:network_type', self.alt_target, self.context))
+
+    def test_get_network_provider_physical_network(self):
+        """Admin can get provider physical networks"""
+        self.assertTrue(
+                self.enforce('create_network:provider:physical_network', self.target, self.context))
+        self.assertTrue(
+                self.enforce(
+                    'create_network:provider:physical_network', self.alt_target, self.context))
+
+    def test_get_network_provider_segmentation_id(self):
+        """Admin can get provider segmentation IDs"""
+        self.assertTrue(
+                self.enforce('create_network:provider:segmentation_id', self.target, self.context))
+        self.assertTrue(
+                self.enforce(
+                    'create_network:provider:segmentation_id', self.alt_target, self.context))
+
     def test_delete_network(self):
         """Admin can delete networks"""
         self.assertTrue(self.enforce('delete_network', self.target, self.context))
@@ -137,6 +165,40 @@ class ProjectManagerNetworkPolicyTests(base.PolicyTestsBase):
 
     def test_create_network_provider_segmentation_id(self):
         """Project manager can specify provider segmentation IDs"""
+        self.assertTrue(
+                self.enforce('create_network:provider:segmentation_id', self.target, self.context))
+        self.assertRaises(
+                policy.PolicyNotAuthorized,
+                self.enforce,
+                'create_network:provider:segmentation_id', self.alt_target, self.context)
+
+    def test_get_network_segments(self):
+        """Admin can get network segments"""
+        self.assertTrue(self.enforce('get_network:segments', self.target, self.context))
+        self.assertRaises(
+                policy.PolicyNotAuthorized,
+                self.enforce, 'get_network:segments', self.alt_target, self.context)
+
+    def test_get_network_provider_network_type(self):
+        """Admin can get provider network types"""
+        self.assertTrue(
+                self.enforce('create_network:provider:network_type', self.target, self.context))
+        self.assertRaises(
+                policy.PolicyNotAuthorized,
+                self.enforce,
+                'create_network:provider:network_type', self.alt_target, self.context)
+
+    def test_get_network_provider_physical_network(self):
+        """Admin can get provider physical networks"""
+        self.assertTrue(
+                self.enforce('create_network:provider:physical_network', self.target, self.context))
+        self.assertRaises(
+                policy.PolicyNotAuthorized,
+                self.enforce,
+                'create_network:provider:physical_network', self.alt_target, self.context)
+
+    def test_get_network_provider_segmentation_id(self):
+        """Admin can get provider segmentation IDs"""
         self.assertTrue(
                 self.enforce('create_network:provider:segmentation_id', self.target, self.context))
         self.assertRaises(
