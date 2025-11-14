@@ -30,6 +30,7 @@ dependencies = [
 	"cinder ~= 25.0",
 	"neutron ~= 25.0",
 	"nova ~= 30.0",
+    "glance ~= 29.0",
 	"oslo.config ~= 9.5.0",
 ]
 
