@@ -23,6 +23,12 @@ We need the following to be allowed (non-root):
 
 * Management of quotas
 
+### Image Service (Glance)
+
+We need the following to be allowed (non-root):
+
+* Publicize image
+
 ### Design
 
 Problem with any service that isn't Keystone is, it has zero view of identity hierarchies.
@@ -102,6 +108,7 @@ pip3 install --force-reinstall --no-deps dist/python_unikorn_openstack_policy-0.
 oslopolicy-policy-generator --namespace unikorn_openstack_policy_blockstorage
 oslopolicy-policy-generator --namespace unikorn_openstack_policy_compute
 oslopolicy-policy-generator --namespace unikorn_openstack_policy_network
+oslopolicy-policy-generator --namespace unikorn_openstack_policy_image
 ```
 
 ## Development
