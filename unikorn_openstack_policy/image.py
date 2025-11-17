@@ -31,7 +31,7 @@ rules = [
     # snapshots are private by default and we need them accessible across projects.
     policy.RuleDefault(
         name=PUBLICIZE,
-        check_str='rule:is_project_manager',
+        check_str='role:image-publisher or rule:is_project_manager',
         description="Make an image's visibility public",
     )
 ]
