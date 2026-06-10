@@ -46,6 +46,13 @@ class ProjectAdminComputePolicyTests(base.PolicyTestsBase):
         self.assertTrue(self.enforce(
             compute.SERVER_CREATE_REQUESTED_DESTINATION, self.alt_target, self.context))
 
+    def test_create_server_forced_host(self):
+        """Admin can create servers on a forced host"""
+        self.assertTrue(self.enforce(
+            compute.SERVER_CREATE_FORCED_HOST, self.target, self.context))
+        self.assertTrue(self.enforce(
+            compute.SERVER_CREATE_FORCED_HOST, self.alt_target, self.context))
+
 
 class DomainAdminComputePolicyTests(ProjectAdminComputePolicyTests):
     """
@@ -88,6 +95,15 @@ class ProjectManagerComputePolicyTests(base.PolicyTestsBase):
                 self.enforce,
                 compute.SERVER_CREATE_REQUESTED_DESTINATION, self.alt_target, self.context)
 
+    def test_create_server_forced_host(self):
+        """Project manager can create servers on a forced host"""
+        self.assertTrue(self.enforce(
+            compute.SERVER_CREATE_FORCED_HOST, self.target, self.context))
+        self.assertRaises(
+                policy.PolicyNotAuthorized,
+                self.enforce,
+                compute.SERVER_CREATE_FORCED_HOST, self.alt_target, self.context)
+
 
 class DomainManagerComputePolicyTests(base.PolicyTestsBase):
     """
@@ -121,6 +137,17 @@ class DomainManagerComputePolicyTests(base.PolicyTestsBase):
                 self.enforce,
                 compute.SERVER_CREATE_REQUESTED_DESTINATION, self.alt_target, self.context)
 
+    def test_create_server_forced_host(self):
+        """Domain manager cannot create servers on a forced host"""
+        self.assertRaises(
+                policy.PolicyNotAuthorized,
+                self.enforce,
+                compute.SERVER_CREATE_FORCED_HOST, self.target, self.context)
+        self.assertRaises(
+                policy.PolicyNotAuthorized,
+                self.enforce,
+                compute.SERVER_CREATE_FORCED_HOST, self.alt_target, self.context)
+
 
 class ProjectMemberComputePolicyTests(base.PolicyTestsBase):
     """
@@ -146,6 +173,13 @@ class ProjectMemberComputePolicyTests(base.PolicyTestsBase):
                 self.enforce,
                 compute.SERVER_CREATE_REQUESTED_DESTINATION, self.target, self.context)
 
+    def test_create_server_forced_host(self):
+        """Project member cannot create servers on a forced host"""
+        self.assertRaises(
+                policy.PolicyNotAuthorized,
+                self.enforce,
+                compute.SERVER_CREATE_FORCED_HOST, self.target, self.context)
+
 
 class DomainMemberComputePolicyTests(base.PolicyTestsBase):
     """
@@ -170,5 +204,12 @@ class DomainMemberComputePolicyTests(base.PolicyTestsBase):
                 policy.PolicyNotAuthorized,
                 self.enforce,
                 compute.SERVER_CREATE_REQUESTED_DESTINATION, self.target, self.context)
+
+    def test_create_server_forced_host(self):
+        """Domain member cannot create servers on a forced host"""
+        self.assertRaises(
+                policy.PolicyNotAuthorized,
+                self.enforce,
+                compute.SERVER_CREATE_FORCED_HOST, self.target, self.context)
 
 # vi: ts=4 et:

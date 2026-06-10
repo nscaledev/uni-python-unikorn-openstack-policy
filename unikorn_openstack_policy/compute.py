@@ -24,6 +24,7 @@ from oslo_policy import policy
 from unikorn_openstack_policy import base
 
 SERVER_CREATE_REQUESTED_DESTINATION = 'compute:servers:create:requested_destination'
+SERVER_CREATE_FORCED_HOST = 'os_compute_api:servers:create:forced_host'
 QUOTA_UPDATE = 'os_compute_api:os-quota-sets:update'
 
 rules = [
@@ -33,6 +34,11 @@ rules = [
         name=SERVER_CREATE_REQUESTED_DESTINATION,
         check_str='rule:is_project_manager',
         description='Create a server on a requested compute host',
+    ),
+    policy.RuleDefault(
+        name=SERVER_CREATE_FORCED_HOST,
+        check_str='rule:is_project_manager',
+        description='Create a server on a forced compute host',
     ),
 
     # The domain manager needs to be able to alter the default quotas
