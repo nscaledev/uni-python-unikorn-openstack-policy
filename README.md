@@ -9,6 +9,7 @@ Oslo policy generation and testing framework.
 We need the following to be allowed (non-root):
 
 * Management of quotas
+* Requesting server placement on specific compute hosts
 
 ### Network Service
 

@@ -23,11 +23,28 @@ from oslo_config import cfg
 from oslo_policy import policy
 from unikorn_openstack_policy import base
 
+SERVER_CREATE_REQUESTED_DESTINATION = 'compute:servers:create:requested_destination'
+SERVER_CREATE_FORCED_HOST = 'os_compute_api:servers:create:forced_host'
+QUOTA_UPDATE = 'os_compute_api:os-quota-sets:update'
+
 rules = [
+    # Allow project managers to request host/hypervisor_hostname placement
+    # while still having Nova run the scheduler filters.
+    policy.RuleDefault(
+        name=SERVER_CREATE_REQUESTED_DESTINATION,
+        check_str='rule:is_project_manager',
+        description='Create a server on a requested compute host',
+    ),
+    policy.RuleDefault(
+        name=SERVER_CREATE_FORCED_HOST,
+        check_str='rule:is_project_manager',
+        description='Create a server on a forced compute host',
+    ),
+
     # The domain manager needs to be able to alter the default quotas
     # or it won't we able to fulfill any cluster creation requests.
     policy.RuleDefault(
-        name='os_compute_api:os-quota-sets:update',
+        name=QUOTA_UPDATE,
         check_str='rule:is_project_manager',
         description='Update the compute quotas',
     )

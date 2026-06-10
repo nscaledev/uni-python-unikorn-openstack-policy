@@ -37,7 +37,21 @@ class ProjectAdminComputePolicyTests(base.PolicyTestsBase):
     def test_update_quota_sets(self):
         """Admin can update quota sets"""
         self.assertTrue(self.enforce(
-            'os_compute_api:os-quota-sets:update', self.target, self.context))
+            compute.QUOTA_UPDATE, self.target, self.context))
+
+    def test_create_server_requested_destination(self):
+        """Admin can create servers on a requested host"""
+        self.assertTrue(self.enforce(
+            compute.SERVER_CREATE_REQUESTED_DESTINATION, self.target, self.context))
+        self.assertTrue(self.enforce(
+            compute.SERVER_CREATE_REQUESTED_DESTINATION, self.alt_target, self.context))
+
+    def test_create_server_forced_host(self):
+        """Admin can create servers on a forced host"""
+        self.assertTrue(self.enforce(
+            compute.SERVER_CREATE_FORCED_HOST, self.target, self.context))
+        self.assertTrue(self.enforce(
+            compute.SERVER_CREATE_FORCED_HOST, self.alt_target, self.context))
 
 
 class DomainAdminComputePolicyTests(ProjectAdminComputePolicyTests):
@@ -66,11 +80,29 @@ class ProjectManagerComputePolicyTests(base.PolicyTestsBase):
     def test_update_quota_sets(self):
         """Project manager can update quota sets"""
         self.assertTrue(self.enforce(
-            'os_compute_api:os-quota-sets:update', self.target, self.context))
+            compute.QUOTA_UPDATE, self.target, self.context))
         self.assertRaises(
                 policy.PolicyNotAuthorized,
                 self.enforce,
-                'os_compute_api:os-quota-sets:update', self.alt_target, self.context)
+                compute.QUOTA_UPDATE, self.alt_target, self.context)
+
+    def test_create_server_requested_destination(self):
+        """Project manager can create servers on a requested host"""
+        self.assertTrue(self.enforce(
+            compute.SERVER_CREATE_REQUESTED_DESTINATION, self.target, self.context))
+        self.assertRaises(
+                policy.PolicyNotAuthorized,
+                self.enforce,
+                compute.SERVER_CREATE_REQUESTED_DESTINATION, self.alt_target, self.context)
+
+    def test_create_server_forced_host(self):
+        """Project manager can create servers on a forced host"""
+        self.assertTrue(self.enforce(
+            compute.SERVER_CREATE_FORCED_HOST, self.target, self.context))
+        self.assertRaises(
+                policy.PolicyNotAuthorized,
+                self.enforce,
+                compute.SERVER_CREATE_FORCED_HOST, self.alt_target, self.context)
 
 
 class DomainManagerComputePolicyTests(base.PolicyTestsBase):
@@ -88,11 +120,33 @@ class DomainManagerComputePolicyTests(base.PolicyTestsBase):
         self.assertRaises(
                 policy.PolicyNotAuthorized,
                 self.enforce,
-                'os_compute_api:os-quota-sets:update', self.target, self.context)
+                compute.QUOTA_UPDATE, self.target, self.context)
         self.assertRaises(
                 policy.PolicyNotAuthorized,
                 self.enforce,
-                'os_compute_api:os-quota-sets:update', self.alt_target, self.context)
+                compute.QUOTA_UPDATE, self.alt_target, self.context)
+
+    def test_create_server_requested_destination(self):
+        """Domain manager cannot create servers on a requested host"""
+        self.assertRaises(
+                policy.PolicyNotAuthorized,
+                self.enforce,
+                compute.SERVER_CREATE_REQUESTED_DESTINATION, self.target, self.context)
+        self.assertRaises(
+                policy.PolicyNotAuthorized,
+                self.enforce,
+                compute.SERVER_CREATE_REQUESTED_DESTINATION, self.alt_target, self.context)
+
+    def test_create_server_forced_host(self):
+        """Domain manager cannot create servers on a forced host"""
+        self.assertRaises(
+                policy.PolicyNotAuthorized,
+                self.enforce,
+                compute.SERVER_CREATE_FORCED_HOST, self.target, self.context)
+        self.assertRaises(
+                policy.PolicyNotAuthorized,
+                self.enforce,
+                compute.SERVER_CREATE_FORCED_HOST, self.alt_target, self.context)
 
 
 class ProjectMemberComputePolicyTests(base.PolicyTestsBase):
@@ -110,7 +164,21 @@ class ProjectMemberComputePolicyTests(base.PolicyTestsBase):
         self.assertRaises(
                 policy.PolicyNotAuthorized,
                 self.enforce,
-                'os_compute_api:os-quota-sets:update', self.target, self.context)
+                compute.QUOTA_UPDATE, self.target, self.context)
+
+    def test_create_server_requested_destination(self):
+        """Project member cannot create servers on a requested host"""
+        self.assertRaises(
+                policy.PolicyNotAuthorized,
+                self.enforce,
+                compute.SERVER_CREATE_REQUESTED_DESTINATION, self.target, self.context)
+
+    def test_create_server_forced_host(self):
+        """Project member cannot create servers on a forced host"""
+        self.assertRaises(
+                policy.PolicyNotAuthorized,
+                self.enforce,
+                compute.SERVER_CREATE_FORCED_HOST, self.target, self.context)
 
 
 class DomainMemberComputePolicyTests(base.PolicyTestsBase):
@@ -128,6 +196,20 @@ class DomainMemberComputePolicyTests(base.PolicyTestsBase):
         self.assertRaises(
                 policy.PolicyNotAuthorized,
                 self.enforce,
-                'os_compute_api:os-quota-sets:update', self.target, self.context)
+                compute.QUOTA_UPDATE, self.target, self.context)
+
+    def test_create_server_requested_destination(self):
+        """Domain member cannot create servers on a requested host"""
+        self.assertRaises(
+                policy.PolicyNotAuthorized,
+                self.enforce,
+                compute.SERVER_CREATE_REQUESTED_DESTINATION, self.target, self.context)
+
+    def test_create_server_forced_host(self):
+        """Domain member cannot create servers on a forced host"""
+        self.assertRaises(
+                policy.PolicyNotAuthorized,
+                self.enforce,
+                compute.SERVER_CREATE_FORCED_HOST, self.target, self.context)
 
 # vi: ts=4 et:
